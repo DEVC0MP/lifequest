@@ -1348,6 +1348,67 @@ textarea {
   }
 }
 
+.pwa-status {
+  position: fixed;
+  z-index: 100;
+  right: 18px;
+  bottom: 18px;
+  width: min(460px, calc(100vw - 36px));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 15px 16px;
+  border: 1px solid rgba(101, 214, 196, 0.55);
+  border-radius: 10px;
+  background: #1a202a;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.38);
+}
+
+.pwa-status.update {
+  border-color: rgba(221, 173, 69, 0.7);
+}
+
+.pwa-status strong {
+  display: block;
+  color: #f5f7fb;
+  font-size: 0.9rem;
+}
+
+.pwa-status p {
+  margin: 5px 0 0;
+  color: #aab4c2;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.pwa-status-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.pwa-status-actions .primary-button,
+.pwa-status-actions .secondary-button {
+  min-height: 38px;
+}
+
+@media (max-width: 600px) {
+  .pwa-status {
+    right: 12px;
+    bottom: 12px;
+    width: calc(100vw - 24px);
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pwa-status-actions > button {
+    flex: 1 1 auto;
+  }
+}
+
 .experiment-screen,
 .experiment-history,
 .review-form {

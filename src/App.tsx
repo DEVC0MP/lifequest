@@ -23,6 +23,7 @@ import { exportAppState } from "./domain/exportImport";
 import { createDailySnapshotIfNeeded, createIndexedDbSnapshotRepository } from "./storage/snapshotRepository";
 import { ExperimentView } from "./components/ExperimentView";
 import { activateExperiment, completeExperiment, saveExperimentReview, stopExperiment } from "./domain/experiments";
+import { PwaStatus } from "./components/PwaStatus";
 
 export type ViewKey = "today" | "goals" | "experiment" | "habits" | "character" | "quests" | "review" | "settings" | "data";
 
@@ -416,12 +417,13 @@ export default function App() {
   }
 
   return (
-    <AppShell
-      currentView={view}
-      onViewChange={setView}
-      storageAlert={saveFailure ? storageFailureCopy(saveFailure) : undefined}
-      onOpenData={() => setView("data")}
-    >
+    <>
+      <AppShell
+        currentView={view}
+        onViewChange={setView}
+        storageAlert={saveFailure ? storageFailureCopy(saveFailure) : undefined}
+        onOpenData={() => setView("data")}
+      >
       {view === "today" && (
         <TodayView
           state={state}
@@ -457,8 +459,10 @@ export default function App() {
           onChange={(settings) => setState((current) => ({ ...current, settings }))}
         />
       )}
-      {view === "data" && <DataPortability state={state} onReplaceState={replaceImportedState} snapshotRepository={snapshotRepository} />}
-    </AppShell>
+        {view === "data" && <DataPortability state={state} onReplaceState={replaceImportedState} snapshotRepository={snapshotRepository} />}
+      </AppShell>
+      <PwaStatus hasStorageFailure={Boolean(saveFailure)} onOpenData={() => setView("data")} />
+    </>
   );
 }
 
