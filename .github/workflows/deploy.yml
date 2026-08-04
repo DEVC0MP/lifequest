@@ -132,11 +132,31 @@ jobs:
         shell: bash
         run: |
           ssh -i "$HOME/.ssh/lifequest_deploy" -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
-            "bash -s -- 'https://lifequest.develith.com/?deploy=${{ github.run_id }}-${{ github.run_attempt }}'" <<'REMOTE_SCRIPT'
+            "bash -s -- 'https://lifequest.develith.com/?deploy=${{ github.run_id }}-${{ github.run_attempt }}' 'https://lifequest.develith.com/manifest.webmanifest?deploy=${{ github.run_id }}-${{ github.run_attempt }}' 'https://lifequest.develith.com/sw.js?deploy=${{ github.run_id }}-${{ github.run_attempt }}'" <<'REMOTE_SCRIPT'
           set -Eeuo pipefail
+          page_file="$(mktemp)"
+          manifest_file="$(mktemp)"
+          worker_file="$(mktemp)"
+          trap 'rm -f "$page_file" "$manifest_file" "$worker_file"' EXIT
+
           curl --fail --silent --show-error --location \
-            --retry 4 --retry-delay 3 --max-time 20 "$1" \
-            | grep --fixed-strings --quiet "LifeQuest"
+            --retry 4 --retry-delay 3 --max-time 20 \
+            --output "$page_file" "$1"
+          grep --fixed-strings --quiet "LifeQuest" "$page_file"
+
+          manifest_type="$(curl --fail --silent --show-error --location \
+            --retry 4 --retry-delay 3 --max-time 20 \
+            --output "$manifest_file" --write-out '%{content_type}' "$2")"
+          case "$manifest_type" in
+            application/manifest+json*) ;;
+            *) echo "Unexpected manifest content type: $manifest_type" >&2; exit 1 ;;
+          esac
+          grep --fixed-strings --quiet '"display":"standalone"' "$manifest_file"
+
+          curl --fail --silent --show-error --location \
+            --retry 4 --retry-delay 3 --max-time 20 \
+            --output "$worker_file" "$3"
+          grep --fixed-strings --quiet "index-" "$worker_file"
           REMOTE_SCRIPT
 
       - name: Finalize successful deployment
