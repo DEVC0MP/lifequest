@@ -6,7 +6,7 @@ Lokalny panel rozwoju osobistego do zarządzania celami, planem tygodnia, codzie
 
 ## Aktualny status
 
-Wersja **0.9.0** jest aktualnym publicznym wydaniem. LifeQuest działa w całości w przeglądarce i nie wymaga konta, backendu ani usługi chmurowej. Kod źródłowy jest publiczny, natomiast cele, zadania, check-iny, notatki, kopie zapasowe i snapshoty bezpieczeństwa pozostają na urządzeniu użytkownika.
+Wersja **0.10.0** dodaje instalowalne PWA i działanie offline po pierwszym uruchomieniu. LifeQuest działa w całości w przeglądarce i nie wymaga konta, backendu ani usługi chmurowej. Kod źródłowy jest publiczny, natomiast cele, zadania, check-iny, notatki, kopie zapasowe i snapshoty bezpieczeństwa pozostają na urządzeniu użytkownika.
 
 ![Panel LifeQuest](docs/assets/lifequest-dashboard.png)
 

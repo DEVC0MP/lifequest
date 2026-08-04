@@ -6,7 +6,7 @@ A local-first personal development dashboard for goals, weekly planning, daily a
 
 ## Current status
 
-Version **0.9.0** is the current public release. LifeQuest runs entirely in the browser and does not require an account, backend, or cloud service. The source code is public, while goals, tasks, check-ins, notes, backups, and safety snapshots remain on the user's device.
+Version **0.10.0** adds installable PWA support and offline use after the first launch. LifeQuest runs entirely in the browser and does not require an account, backend, or cloud service. The source code is public, while goals, tasks, check-ins, notes, backups, and safety snapshots remain on the user's device.
 
 ![LifeQuest dashboard](docs/assets/lifequest-dashboard.png)
 

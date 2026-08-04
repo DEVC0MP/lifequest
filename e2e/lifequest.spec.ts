@@ -1,6 +1,9 @@
 import { readFile } from "node:fs/promises";
 import { expect, test } from "@playwright/test";
 
+const packageJson = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
+const APP_VERSION = packageJson.version;
+
 const STORAGE_KEY = "lifequest-rpg-state-v1";
 
 function addLocalDays(localDate: string, days: number): string {
@@ -17,7 +20,7 @@ test("user can complete a quest and export data", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Dzisiejsze zadania" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Otwórz pełne postępy" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Arkusz postępu" })).toHaveCount(0);
-  await expect(page.getByText("LifeQuest v0.9.0")).toBeVisible();
+  await expect(page.getByText(`LifeQuest v${APP_VERSION}`)).toBeVisible();
   await page.getByRole("button", { name: "Ustawienia" }).click();
   await expect(page.getByRole("heading", { name: "Personalizacja planu" })).toBeVisible();
   await page.getByLabel("Energia").check();
@@ -135,7 +138,7 @@ test("user can complete a quest and export data", async ({ page }) => {
   expect(backup).toMatchObject({
     format: "lifequest-backup",
     formatVersion: 1,
-    appVersion: "0.9.0",
+    appVersion: APP_VERSION,
     dataVersion: 4,
     state: { settings: { dataVersion: 4 } }
   });
@@ -168,7 +171,7 @@ test("desktop sidebar keeps the version visible while content scrolls", async ({
   await page.getByRole("button", { name: "Habity" }).click();
 
   const sidebar = page.locator("aside.sidebar");
-  const version = page.getByText("LifeQuest v0.9.0");
+  const version = page.getByText(`LifeQuest v${APP_VERSION}`);
   await expect(version).toBeVisible();
   await expect(sidebar).toHaveCSS("position", "sticky");
 
